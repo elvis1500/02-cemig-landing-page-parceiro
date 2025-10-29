@@ -1,0 +1,159 @@
+/* src/app/globals.css */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ===== Tema CEMIG (Tailwind v4) ===== */
+/* ===== Tema CEMIG (tokens em HEX) ===== */
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #111827;
+
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+
+  --color-card: #ffffff;
+  --color-card-foreground: #111827;
+
+  --color-border: #e5e7eb;
+  --color-input: #e5e7eb;
+
+  /* CEMIG */
+  --color-primary: #00c853; /* verde */
+  --color-primary-foreground: #ffffff; /* texto sobre o verde */
+
+  --color-secondary: #003a2b; /* verde escuro */
+  --color-secondary-foreground: #ffffff;
+
+  --color-accent: #c7f9df;
+  --color-accent-foreground: #0f172a;
+
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+
+  --color-ring: #00c853;
+  --radius: 12px;
+}
+
+/* ===== Aliases utilitários explícitos (garantia) ===== */
+@utility bg-primary {
+  background-color: var(--color-primary);
+}
+@utility text-primary-foreground {
+  color: var(--color-primary-foreground);
+}
+@utility bg-secondary {
+  background-color: var(--color-secondary);
+}
+@utility text-secondary-foreground {
+  color: var(--color-secondary-foreground);
+}
+@utility border-border {
+  border-color: var(--color-border);
+}
+@utility bg-background {
+  background-color: var(--color-background);
+}
+@utility text-foreground {
+  color: var(--color-foreground);
+}
+@utility bg-muted {
+  background-color: var(--color-muted);
+}
+@utility text-muted-foreground {
+  color: var(--color-muted-foreground);
+}
+
+/* Gradiente que já estava ok */
+@utility bg-cemig-gradient {
+  background: linear-gradient(180deg, #b8ffda 0%, #00c853 100%);
+}
+
+/* foco visível */
+:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+
+/* === Timer do dot ativo (autoplay) === */
+@keyframes dot-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* pílula de progresso (track + fill) */
+.dot-pill {
+  position: relative;
+  height: 8px;
+  width: 28px; /* pílula alongada como no layout */
+  border-radius: 9999px;
+  /* Track ativa do banner */
+  background-color: #2f7a67; /* cor solicitada quando ativo */
+  overflow: hidden;
+}
+
+.dot-pill > .dot-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: #0f6c58; /* verde escuro para o preenchimento */
+  transform-origin: left;
+  transform: scaleX(0);
+  /* duração controlada inline pelo componente */
+}
+
+/* ===== Reveal base ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition-property: opacity, transform;
+  transition-duration: var(--reveal-dur, 1000ms);
+  transition-timing-function: var(
+    --reveal-ease,
+    cubic-bezier(0.22, 0.61, 0.36, 1)
+  );
+  transition-delay: var(--reveal-delay, 120ms);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Variações (opcional) */
+.reveal-x {
+  transform: translateX(24px);
+}
+.reveal-neg {
+  transform: translateY(-16px);
+}
+.reveal-zoom {
+  transform: translateY(8px) scale(0.98);
+}
+
+/* Stagger por filho (usando --i) */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--reveal-dur, 500ms) cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform var(--reveal-dur, 500ms) cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-delay: calc(var(--reveal-base, 80ms) + (var(--i, 0) * 100ms));
+}
+.reveal-stagger.is-visible > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* Acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-stagger > * {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
